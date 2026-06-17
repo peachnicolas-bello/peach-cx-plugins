@@ -1,0 +1,5 @@
+{
+  "name": "cx",
+  "description": "Peach CX slash commands: investigate, follow-up, api-question, product-question, tags, update-repos. The investigate command fans out across the dev plugin's team-lens agents.",
+  "version": "0.1.0"
+}

@@ -8,6 +8,15 @@ Private internal Claude Code plugin marketplace for the Peach CX workflow.
 .claude-plugin/
   marketplace.json          # registers the plugins below (marketplace name: peach-cx)
 claude/plugins/
+  cx/                       # CX slash commands
+    plugin.json
+    commands/
+      investigate.md
+      follow-up.md
+      api-question.md
+      product-question.md
+      tags.md
+      update-repos.md
   dev/                      # debugging + the shared investigation agent pool
     plugin.json
     agents/
@@ -66,18 +75,27 @@ The marketplace registers itself under the name `peach-cx`. Refresh later with
 Install only what you need. The format is `plugin@marketplace`:
 
 ```
+/plugin install cx@peach-cx
 /plugin install dev@peach-cx
 /plugin install support@peach-cx
 /plugin install research@peach-cx
 ```
 
-After install, the skills are available as `/debug`, `/bug`, and `/research`.
-Manage or remove them anytime with `/plugin`.
+After install, the commands and skills are available as `/investigate`,
+`/follow-up`, `/api-question`, `/product-question`, `/tags`, `/update-repos`,
+`/debug`, `/bug`, and `/research`. Manage or remove them anytime with `/plugin`.
+
+The `cx` commands depend on the host environment for the protocol
+(`AGENTS.md` / `CLAUDE.md`), the memory files (lender quirks, company IDs, tag
+snapshot), and the Zendesk, Shortcut, and Slack MCP servers. The plugin
+centralizes the commands and agents; the protocol doc and memory stay
+project- and user-scoped.
 
 ## Available plugins
 
 | Plugin | Command | What it does |
 |---|---|---|
+| `cx` | `/investigate`, `/follow-up`, `/api-question`, `/product-question`, `/tags`, `/update-repos` | The CX slash-command toolkit. `/investigate` runs the full protocol and fans out across the dev team-lens agents on full-mode tickets. The rest cover follow-ups, API-capability answers, product posts, Zendesk tagging, and repo refresh. |
 | `dev` | `/debug` | Investigate an issue end to end, code-first. The code tells you the exact strings, exception types, and identifiers to search for, so you stop guessing. Six steps: understand, search the codebase, pick the right signals, run queries, analyze, report. |
 | `support` | `/bug` | Turn raw context or an interactive Q&A into a ready-to-file Shortcut story. Takes optional background text (`/bug the login page crashes when you try to pay_off a statement`), parses what it can, fills the gaps with short questions, then drafts and iterates until you approve. Leads with THE ASK and drops empty sections. |
 | `research` | `/research` | Given a ticket, fetch and analyze it, fan out the three research agents in parallel, and synthesize a research document for the next phase (including follow-up tickets). |

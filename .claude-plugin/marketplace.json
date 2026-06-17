@@ -10,6 +10,11 @@
   },
   "plugins": [
     {
+      "name": "cx",
+      "source": "./claude/plugins/cx",
+      "description": "Peach CX slash commands: investigate, follow-up, api-question, product-question, tags, update-repos."
+    },
+    {
       "name": "dev",
       "source": "./claude/plugins/dev",
       "description": "Debugging skills for investigating an issue against the codebase and prior work, code-first."
