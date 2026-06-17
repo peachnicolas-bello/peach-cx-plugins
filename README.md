@@ -59,37 +59,58 @@ export GITHUB_TOKEN="$(gh auth token)"
 export GITHUB_TOKEN="ghp_xxxxxxxxxxxxxxxxxxxx"
 ```
 
-### 2. Add the marketplace by pointing Claude Code at this repo
+### 2. Register the marketplace in settings.json
 
-In Claude Code:
+Add this to `~/.claude/settings.json` (create the file if it doesn't exist):
 
+```json
+{
+  "extraKnownMarketplaces": {
+    "peach-cx": {
+      "source": {
+        "source": "github",
+        "repo": "peachnicolas-bello/peach-cx-plugins"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "cx@peach-cx": true,
+    "dev@peach-cx": true,
+    "support@peach-cx": true,
+    "research@peach-cx": true
+  }
+}
 ```
-/plugin marketplace add peachnicolas-bello/peach-cx-plugins
+
+This registers the marketplace and enables all four plugins. The `dev`,
+`support`, and `research` plugins provide skills and agents that load
+automatically on launch.
+
+### 3. Copy CX commands into each project
+
+The `cx` plugin contains slash commands (`/investigate`, `/follow-up`, etc.).
+Claude Code loads commands from the project's `.claude/commands/` directory,
+not from plugins. Copy them once per project:
+
+```bash
+# from the project root (e.g. peach-main)
+mkdir -p .claude/commands
+cp ~/Downloads/peach-cx-plugins/claude/plugins/cx/commands/*.md .claude/commands/
 ```
 
-The marketplace registers itself under the name `peach-cx`. Refresh later with
-`/plugin marketplace update peach-cx`.
+After copying, the commands are available immediately (no relaunch needed).
+When the plugin repo updates a command, re-run the `cp` to pick up changes.
 
-### 3. Install individual plugins
+### What lives where
 
-Install only what you need. The format is `plugin@marketplace`:
-
-```
-/plugin install cx@peach-cx
-/plugin install dev@peach-cx
-/plugin install support@peach-cx
-/plugin install research@peach-cx
-```
-
-After install, the commands and skills are available as `/investigate`,
-`/follow-up`, `/api-question`, `/product-question`, `/tags`, `/update-repos`,
-`/debug`, `/bug`, and `/research`. Manage or remove them anytime with `/plugin`.
-
-The `cx` commands depend on the host environment for the protocol
-(`AGENTS.md` / `CLAUDE.md`), the memory files (lender quirks, company IDs, tag
-snapshot), and the Zendesk, Shortcut, and Slack MCP servers. The plugin
-centralizes the commands and agents; the protocol doc and memory stay
-project- and user-scoped.
+| What | Where it lives | Loads from |
+|---|---|---|
+| Slash commands (`/investigate`, `/follow-up`, etc.) | Plugin repo `cx/commands/` | Copied to each project's `.claude/commands/` |
+| Skills (`/debug`, `/bug`, `/research`) | Plugin repo `dev/`, `support/`, `research/` | Marketplace (automatic) |
+| Agents (codebase-investigator, etc.) | Plugin repo `dev/agents/`, `support/agents/`, `research/agents/` | Marketplace (automatic) |
+| Protocol (`AGENTS.md` / `CLAUDE.md`) | Each project | Project-scoped |
+| Memory files (quirks, company IDs, tags) | `~/.claude/projects/` | User-scoped |
+| MCP servers (Zendesk, Shortcut, Slack) | Host machine | Session-scoped |
 
 ## Available plugins
 
