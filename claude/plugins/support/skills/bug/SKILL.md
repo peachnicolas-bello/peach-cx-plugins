@@ -53,7 +53,20 @@ after parsing, ask the user for the remaining details. Keep it to the few
 fields that actually block filing the story. Do not ask for optional fields
 just to fill the template.
 
-### 5. Draft, iterate, approve
+### 5. Check for duplicates and routing
+
+Before drafting, spawn these two agents in parallel:
+
+- `support:duplicate-checker` searches Shortcut across all teams and states for
+  an existing story on the same issue. If it finds a true duplicate, propose
+  adding a comment to that story instead of filing a new one.
+- `support:routing-agent` determines the target team, Slack channel, and SE
+  owner for the lender, plus whether it is routine or on-call urgency.
+
+Fold both results into the draft: skip filing if a duplicate exists, and put
+the routing recommendation in front of the user with the story.
+
+### 6. Draft, iterate, approve
 
 Draft the story using the matching template. Show it to the user. Incorporate
 any feedback and repeat until the user approves. Do not file anything until the

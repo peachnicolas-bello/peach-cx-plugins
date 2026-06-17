@@ -16,6 +16,24 @@ for.** Blind searches waste time. The code tells you the exact error strings,
 exception class names, event names, config flags, and identifiers that actually
 exist. Read first, then search for the real tokens, then read the hits.
 
+## Agents
+
+For anything past a one-line lookup, do not run the whole investigation inline.
+Spawn these agents in parallel and synthesize their findings yourself. They are
+blind to each other; the divergence between them is often the finding.
+
+- `dev:codebase-investigator` establishes the actual behavior on the failing
+  path, code-first, with `repo/file.py:LINE` citations.
+- `dev:signals-queries-agent` turns the leading hypothesis into the exact SQL or
+  API checks that confirm or refute it, anchored to real schema names.
+- `dev:hypothesis-tester` runs last, adversarially, against the leading cause:
+  it tries to refute the diagnosis before you commit to it.
+
+Sequence: spawn codebase-investigator and signals-queries-agent together, read
+their output, form the leading hypothesis, then spawn hypothesis-tester to
+attack it. Only report once the hypothesis survives. For a trivial, already
+understood symptom, skip the fan-out and do it inline.
+
 ## Prerequisites
 
 - Know which repos are in scope and where they live on disk. Default Peach set:

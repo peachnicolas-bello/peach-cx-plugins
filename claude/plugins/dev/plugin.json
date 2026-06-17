@@ -1,5 +1,5 @@
 {
   "name": "dev",
-  "description": "Debugging skills for investigating an issue against the codebase and prior work, code-first.",
-  "version": "0.1.0"
+  "description": "Debugging skills plus the shared parallel investigation agent pool (TSE, DevOps, Product, Solutions lenses).",
+  "version": "0.2.0"
 }
