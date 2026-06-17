@@ -1,0 +1,5 @@
+{
+  "name": "support",
+  "description": "Bug-report skill that turns raw context or an interactive Q&A into a ready-to-file Shortcut story.",
+  "version": "0.1.0"
+}

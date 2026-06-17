@@ -1,0 +1,28 @@
+{
+  "name": "peach-cx",
+  "owner": {
+    "name": "Nicolas Bello",
+    "email": "nicolas.bello@peachfinance.com"
+  },
+  "metadata": {
+    "description": "Internal Peach CX plugins: issue debugging, bug reporting, and ticket research workflows.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "dev",
+      "source": "./claude/plugins/dev",
+      "description": "Debugging skills for investigating an issue against the codebase and prior work, code-first."
+    },
+    {
+      "name": "support",
+      "source": "./claude/plugins/support",
+      "description": "Bug-report skill that turns raw context or an interactive Q&A into a ready-to-file Shortcut story."
+    },
+    {
+      "name": "research",
+      "source": "./claude/plugins/research",
+      "description": "Ticket research: parallel internal, external, and business research agents plus a synthesis skill."
+    }
+  ]
+}
