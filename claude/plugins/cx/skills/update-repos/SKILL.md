@@ -1,13 +1,14 @@
 ---
-description: Pull latest on peach-main, peach-front, peach-docs and reindex BM25
-argument-hint: (no args; pass "skip-index" to skip the BM25 rebuild)
+name: update-repos
+description: Pull latest on peach-main, peach-front, peach-docs and reindex BM25. Use when the user says /update-repos or asks to refresh the local repos.
 model: claude-opus-4-6
 ---
 
-# Update local Peach repos — $ARGUMENTS
+# Update local Peach repos
 
 Pull the latest commits on the three local Peach repos and rebuild the
-BM25 search index so grep + KB results reflect HEAD.
+BM25 search index so grep + KB results reflect HEAD. If the user's message
+contains "skip-index", skip the BM25 rebuild step.
 
 ## Step 1: Pull all three repos in parallel
 
@@ -26,7 +27,7 @@ done
 
 ## Step 2: Print a per-repo summary table
 
-Report in this exact shape — one row per repo:
+Report in this exact shape, one row per repo:
 
 | Repo | Before | After | Status |
 |---|---|---|---|
@@ -38,7 +39,7 @@ If a repo failed to fast-forward (non-trivial rebase needed, conflicts,
 uncommitted changes), report it clearly and STOP. Do not force-pull. Tell
 Nicolas what to clean up so he can decide.
 
-## Step 3: Rebuild BM25 index (unless `$ARGUMENTS` is "skip-index")
+## Step 3: Rebuild BM25 index (unless user said "skip-index")
 
 After successful pulls, run:
 

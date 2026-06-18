@@ -1,10 +1,12 @@
 ---
-description: Draft a tight #product-questions Slack post (6-8 sentences, ask-led)
-argument-hint: <brief context: ticket number + topic>
+name: product-question
+description: Draft a tight #product-questions Slack post (6-8 sentences, ask-led). Use when a CX investigation routes to product and needs Russell Braden or Eddie Oistacher.
 model: claude-opus-4-6
 ---
 
-# Draft #product-questions post — $ARGUMENTS
+# Draft a #product-questions post
+
+Extract the context from the user's message (ticket number, topic, lender).
 
 Compose a Slack post for #product-questions following the rule in
 `AGENTS.md` → "#product-questions posts: lead with the ask, cap at 6-8

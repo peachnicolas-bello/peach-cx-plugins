@@ -1,24 +1,23 @@
 ---
-description: Run the full CX investigation protocol on a Zendesk ticket
-argument-hint: <ticket-number>
+name: investigate
+description: Run the full CX investigation protocol on a Zendesk ticket. Use when the user says /investigate, pastes a ticket number, or asks to investigate a ticket.
 model: claude-opus-4-6
 ---
 
-# Investigate ZD #$ARGUMENTS — full protocol, mandatory pre-flight
+# Investigate a Zendesk ticket — full protocol, mandatory pre-flight
 
-You are running the CX investigation protocol defined in `.claude/CLAUDE.md`
-on Zendesk ticket #$ARGUMENTS. The rules below are non-negotiable for this
-turn. If you cannot satisfy them, stop and say so explicitly — do not skip
-them.
+You are running the CX investigation protocol defined in `.claude/CLAUDE.md`.
+Extract the ticket number from the user's message (e.g. "5835", "ZD #5835",
+"investigate ticket 5835"). Call that number TICKET below.
 
 ## Step 1: Print the pre-flight checklist BEFORE anything else
 
-The first thing in your response must be this block, filled in for ZD
-#$ARGUMENTS. No preamble, no "let me investigate," no summary. The
-checklist comes first.
+The first thing in your response must be this block, filled in for the
+ticket. No preamble, no "let me investigate," no summary. The checklist
+comes first.
 
 ```
-PRE-FLIGHT — ZD #$ARGUMENTS
+PRE-FLIGHT — ZD #<TICKET>
 
 Ask / Problem / Want
   Ask:     <one line>
@@ -113,5 +112,5 @@ Only AFTER the pre-flight is filled in do you proceed with:
    agree; if any source is silent or contradicting, downgrade.
 
 If at any point you find yourself about to skip the pre-flight because
-"this one's simple," that is exactly the failure mode this command exists
+"this one's simple," that is exactly the failure mode this skill exists
 to prevent. Print the pre-flight. Then decide if it's simple.

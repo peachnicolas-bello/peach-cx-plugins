@@ -12,7 +12,7 @@
     {
       "name": "cx",
       "source": "./claude/plugins/cx",
-      "description": "Peach CX slash commands: investigate, follow-up, api-question, product-question, tags, update-repos."
+      "description": "Peach CX skills: investigate, follow-up, api-question, product-question, tags, update-repos."
     },
     {
       "name": "dev",

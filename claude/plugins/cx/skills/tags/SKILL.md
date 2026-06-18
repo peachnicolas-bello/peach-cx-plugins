@@ -1,12 +1,14 @@
 ---
-description: Suggest the right Zendesk tags for a ticket from Peach's canonical tag list
-argument-hint: <ticket-number>
+name: tags
+description: Suggest the right Zendesk tags for a ticket from Peach's canonical tag list. Use when the user says /tags or asks what tags to apply to a ticket.
 model: claude-opus-4-6
 ---
 
-# Suggest Zendesk tags for ZD #$ARGUMENTS
+# Suggest Zendesk tags for a ticket
 
-Suggest the tags that belong on Zendesk ticket #$ARGUMENTS, drawn ONLY from
+Extract the ticket number from the user's message. Call it TICKET below.
+
+Suggest the tags that belong on the Zendesk ticket, drawn ONLY from
 Peach's canonical tag list. Never invent a tag.
 
 ## Source of truth
@@ -48,8 +50,8 @@ and say so explicitly in the output.
 ## Steps
 
 1. Read the live sheet (Step 1 above).
-2. Pull the ticket with `zendesk_get_ticket_details` on $ARGUMENTS. Read the
-   subject and the full conversation, public and private.
+2. Pull the ticket with `zendesk_get_ticket_details` on the ticket number.
+   Read the subject and the full conversation, public and private.
 3. Extract the real subjects: feature, surface, transaction type, lifecycle
    stage, channel, lender context.
 4. Match each subject to a canonical TRUE tag using the intended-reference
@@ -57,7 +59,7 @@ and say so explicitly in the output.
 5. Output the result in this shape:
 
 ```
-TAGS — ZD #$ARGUMENTS  (source: live sheet | snapshot fallback)
+TAGS — ZD #<TICKET>  (source: live sheet | snapshot fallback)
 
 Already on ticket: <existing tags, marking which are canonical subject tags
 vs org/request-type tags>

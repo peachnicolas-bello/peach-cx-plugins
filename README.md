@@ -8,15 +8,15 @@ Private internal Claude Code plugin marketplace for the Peach CX workflow.
 .claude-plugin/
   marketplace.json          # registers the plugins below (marketplace name: peach-cx)
 claude/plugins/
-  cx/                       # CX slash commands
+  cx/                       # CX skills (ticket investigation, follow-ups, API answers)
     plugin.json
-    commands/
-      investigate.md
-      follow-up.md
-      api-question.md
-      product-question.md
-      tags.md
-      update-repos.md
+    skills/
+      investigate/SKILL.md
+      follow-up/SKILL.md
+      api-question/SKILL.md
+      product-question/SKILL.md
+      tags/SKILL.md
+      update-repos/SKILL.md
   dev/                      # debugging + the shared investigation agent pool
     plugin.json
     agents/
@@ -82,41 +82,24 @@ Add this to `~/.claude/settings.json` (create the file if it doesn't exist):
 }
 ```
 
-This registers the marketplace and enables all four plugins. The `dev`,
-`support`, and `research` plugins provide skills and agents that load
-automatically on launch.
-
-### 3. Copy CX commands into each project
-
-The `cx` plugin contains slash commands (`/investigate`, `/follow-up`, etc.).
-Claude Code loads commands from the project's `.claude/commands/` directory,
-not from plugins. Copy them once per project:
-
-```bash
-# from the project root (e.g. peach-main)
-mkdir -p .claude/commands
-cp ~/Downloads/peach-cx-plugins/claude/plugins/cx/commands/*.md .claude/commands/
-```
-
-After copying, the commands are available immediately (no relaunch needed).
-When the plugin repo updates a command, re-run the `cp` to pick up changes.
+This registers the marketplace and enables all four plugins. All skills and
+agents load automatically on launch. No manual file copying needed.
 
 ### What lives where
 
 | What | Where it lives | Loads from |
 |---|---|---|
-| Slash commands (`/investigate`, `/follow-up`, etc.) | Plugin repo `cx/commands/` | Copied to each project's `.claude/commands/` |
-| Skills (`/debug`, `/bug`, `/research`) | Plugin repo `dev/`, `support/`, `research/` | Marketplace (automatic) |
-| Agents (codebase-investigator, etc.) | Plugin repo `dev/agents/`, `support/agents/`, `research/agents/` | Marketplace (automatic) |
+| All skills (`/investigate`, `/follow-up`, `/debug`, `/bug`, `/research`, etc.) | Plugin repo | Marketplace (automatic) |
+| All agents (codebase-investigator, etc.) | Plugin repo | Marketplace (automatic) |
 | Protocol (`AGENTS.md` / `CLAUDE.md`) | Each project | Project-scoped |
 | Memory files (quirks, company IDs, tags) | `~/.claude/projects/` | User-scoped |
 | MCP servers (Zendesk, Shortcut, Slack) | Host machine | Session-scoped |
 
 ## Available plugins
 
-| Plugin | Command | What it does |
+| Plugin | Skills | What it does |
 |---|---|---|
-| `cx` | `/investigate`, `/follow-up`, `/api-question`, `/product-question`, `/tags`, `/update-repos` | The CX slash-command toolkit. `/investigate` runs the full protocol and fans out across the dev team-lens agents on full-mode tickets. The rest cover follow-ups, API-capability answers, product posts, Zendesk tagging, and repo refresh. |
+| `cx` | `/investigate`, `/follow-up`, `/api-question`, `/product-question`, `/tags`, `/update-repos` | The CX skill toolkit. `/investigate` runs the full protocol and fans out across the dev team-lens agents on full-mode tickets. The rest cover follow-ups, API-capability answers, product posts, Zendesk tagging, and repo refresh. |
 | `dev` | `/debug` | Investigate an issue end to end, code-first. The code tells you the exact strings, exception types, and identifiers to search for, so you stop guessing. Six steps: understand, search the codebase, pick the right signals, run queries, analyze, report. |
 | `support` | `/bug` | Turn raw context or an interactive Q&A into a ready-to-file Shortcut story. Takes optional background text (`/bug the login page crashes when you try to pay_off a statement`), parses what it can, fills the gaps with short questions, then drafts and iterates until you approve. Leads with THE ASK and drops empty sections. |
 | `research` | `/research` | Given a ticket, fetch and analyze it, fan out the three research agents in parallel, and synthesize a research document for the next phase (including follow-up tickets). |

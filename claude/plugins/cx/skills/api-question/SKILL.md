@@ -1,14 +1,14 @@
 ---
-description: Answer an API capability question with grep evidence, not inference
-argument-hint: <the question>
+name: api-question
+description: Answer an API capability question with grep evidence, not inference. Use when the user asks about Peach API behavior, limits, permissions, endpoints, headers, error codes, idempotency, webhooks, or "does Peach support X."
 model: claude-opus-4-6
 ---
 
 # API question — grep peach-main + peach-front + peach-docs, cite or VERIFY
 
-Question: $ARGUMENTS
+Extract the API question from the user's message and call it QUESTION below.
 
-This command exists because of the Decagon failure (ZD #5762) where an
+This skill exists because of the Decagon failure (ZD #5762) where an
 inference-flavored answer slipped past the Precision rule. For this turn,
 the answer is grounded in grep evidence or it is a VERIFY block. No third
 option.
@@ -16,7 +16,7 @@ option.
 ## Step 1: Print the grep manifest BEFORE answering
 
 ```
-GREP MANIFEST — $ARGUMENTS
+GREP MANIFEST — <QUESTION>
 
 Patterns I will run
   peach-main   : grep -rn "<pattern>" --include="*.py" peach/

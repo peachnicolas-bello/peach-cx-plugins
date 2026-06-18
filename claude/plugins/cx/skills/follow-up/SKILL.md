@@ -1,23 +1,24 @@
 ---
-description: Read state on a mid-flight ticket and draft the next move
-argument-hint: <ticket-number>
+name: follow-up
+description: Read state on a mid-flight Zendesk ticket and draft the next move. Use when the user says /follow-up, asks "where does this stand", or wants a follow-up on a ticket already in flight.
 model: claude-opus-4-6
 ---
 
-# Follow-up on ZD #$ARGUMENTS — state synthesis, next-move draft
+# Follow-up on a Zendesk ticket — state synthesis, next-move draft
 
-You are running a follow-up cycle on ZD #$ARGUMENTS. This command is
-different from `/investigate`. Use this when the ticket has been in flight
-for multiple rounds and the question is not "what is the answer" but "where
-does this stand and what do I send next."
+You are running a follow-up cycle on a Zendesk ticket. Extract the ticket
+number from the user's message. Call that number TICKET below.
+
+This skill is different from `/investigate`. Use this when the ticket has been
+in flight for multiple rounds and the question is not "what is the answer" but
+"where does this stand and what do I send next."
 
 ## Step 1: Print the follow-up pre-flight
 
-The first thing in your response must be this block, filled in. No
-preamble.
+The first thing in your response must be this block, filled in. No preamble.
 
 ```
-FOLLOW-UP — ZD #$ARGUMENTS
+FOLLOW-UP — ZD #<TICKET>
 
 Current state
   Last comment by:        <name + role (Peach / lender / SE)>
@@ -46,10 +47,10 @@ Where the ticket is stuck (one sentence)
 
 Use the MCP tools available:
 
-1. **`zendesk_get_ticket_details`** on `$ARGUMENTS`. Read every comment,
+1. **`zendesk_get_ticket_details`** on the ticket number. Read every comment,
    public and private, to reconstruct the timeline.
 2. **`stories-get-by-external-link`** with the ticket URL
-   (`https://peachfinance.zendesk.com/agent/tickets/$ARGUMENTS`). If a
+   (`https://peachfinance.zendesk.com/agent/tickets/<TICKET>`). If a
    Shortcut story is linked, pull its full body and comments via
    `stories-get-by-id`.
 3. **`stories-search`** with 2-3 keyword combinations covering the lender
@@ -67,7 +68,7 @@ Use the MCP tools available:
    load-bearing source for "where the ticket is stuck" and "what is the
    next move." Skipping this step is the single most common cause of a
    stale follow-up draft.
-5. **Code grep** ONLY if the follow-up turns up a load-bearing claim that
+6. **Code grep** ONLY if the follow-up turns up a load-bearing claim that
    has no source yet. Otherwise skip — this is a state-sync, not a fresh
    investigation.
 
@@ -95,9 +96,9 @@ Keep it tight. One row per meaningful action.
 After the timeline, pick ONE of these and produce the matching artifact:
 
 **Type A: Client draft.** Use when we have a defensible answer to every
-open thread and the next action is sending Quincy / Danielle / Erica a
-substantive reply. Voice rules apply (no em dashes, no en dashes, no
-`-` connectors, no marketing words, greeting Hi <name>, no sign-off).
+open thread and the next action is sending the client a substantive reply.
+Voice rules apply (no em dashes, no en dashes, no `-` connectors, no
+marketing words, greeting Hi <name>, no sign-off).
 
 **Type B: Holding reply.** Use when we're waiting on Peach-side action
 (eng, product, SE) but the client deserves an acknowledgment. Two to
@@ -150,11 +151,11 @@ what's drafted or wait.
    📭 Undocumented / ❓ Uncertain) on the drafted artifact only.
    The state synthesis itself does not need a stamp.
 
-## Why this command exists
+## Why this skill exists
 
 Tickets like ZD #5714 (Wisetack check processing, 9 rounds) and ZD #5742
 (Tilt dispute display, FinWise compliance pressure) accumulate state
-faster than I can hold in working memory across sessions. `/investigate`
+faster than working memory can hold across sessions. `/investigate`
 is wrong for these because the question is no longer "what is the
 answer." It is "what is the current ball-in-court and what do I send
 to advance it."
