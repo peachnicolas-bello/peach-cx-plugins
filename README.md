@@ -8,13 +8,15 @@ Private internal Claude Code plugin marketplace for the Peach CX workflow.
 .claude-plugin/
   marketplace.json          # registers the plugins below (marketplace name: peach-cx)
 claude/plugins/
-  cx/                       # CX skills (ticket investigation, follow-ups, API answers)
+  cx/                       # CX skills (ticket investigation, follow-ups, drafting)
     plugin.json
+    agents/
+      response-drafter.md
+      voice-auditor.md
     skills/
       investigate/SKILL.md
       follow-up/SKILL.md
-      api-question/SKILL.md
-      product-question/SKILL.md
+      draft/SKILL.md
       tags/SKILL.md
       update-repos/SKILL.md
   dev/                      # debugging + the shared investigation agent pool
@@ -99,7 +101,7 @@ agents load automatically on launch. No manual file copying needed.
 
 | Plugin | Skills | What it does |
 |---|---|---|
-| `cx` | `/investigate`, `/follow-up`, `/api-question`, `/product-question`, `/tags`, `/update-repos` | The CX skill toolkit. `/investigate` runs the full protocol and fans out across the dev team-lens agents on full-mode tickets. The rest cover follow-ups, API-capability answers, product posts, Zendesk tagging, and repo refresh. |
+| `cx` | `/investigate`, `/follow-up`, `/draft`, `/tags`, `/update-repos` | The CX skill toolkit. `/investigate` runs the full protocol. `/draft` runs a drafter then a voice auditor to produce ready-to-paste responses (client replies, holding replies, Slack posts, eng asks). The rest cover follow-ups, Zendesk tagging, and repo refresh. |
 | `dev` | `/debug` | Investigate an issue end to end, code-first. The code tells you the exact strings, exception types, and identifiers to search for, so you stop guessing. Six steps: understand, search the codebase, pick the right signals, run queries, analyze, report. |
 | `support` | `/bug` | Turn raw context or an interactive Q&A into a ready-to-file Shortcut story. Takes optional background text (`/bug the login page crashes when you try to pay_off a statement`), parses what it can, fills the gaps with short questions, then drafts and iterates until you approve. Leads with THE ASK and drops empty sections. |
 | `research` | `/research` | Given a ticket, fetch and analyze it, fan out the three research agents in parallel, and synthesize a research document for the next phase (including follow-up tickets). |
@@ -109,6 +111,16 @@ agents load automatically on launch. No manual file copying needed.
 The agents run in parallel, each blind to the others, so the divergence between
 them surfaces gaps. They are modeled on the real teams that weigh in on a
 ticket: TSE, DevOps, Product, Solutions, CX.
+
+### cx plugin (drafting pool)
+
+`/draft` runs these sequentially: the drafter produces the response, then the
+auditor checks it against all voice rules and rewrites if needed.
+
+| Agent | What it does | Tools |
+|---|---|---|
+| `response-drafter` | Picks the draft type (client reply, holding, internal routing, eng ask) and writes the draft following all voice and shape rules. | Read, Grep, Glob |
+| `voice-auditor` | Adversarially audits the draft for voice-rule violations (em dashes, length, AI tells, shape, precision). Returns PASS or a corrected draft with violations listed. | Read, Grep, Glob |
 
 ### dev plugin (investigation + debug pool)
 

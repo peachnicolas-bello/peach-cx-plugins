@@ -1,5 +1,5 @@
 {
   "name": "cx",
-  "description": "Peach CX skills: investigate, follow-up, api-question, product-question, tags, update-repos. The investigate skill fans out across the dev plugin's team-lens agents on full-mode tickets.",
-  "version": "0.2.0"
+  "description": "Peach CX skills: investigate, follow-up, draft, tags, update-repos. The investigate skill fans out across the dev plugin's team-lens agents on full-mode tickets. The draft skill runs a drafter then a voice auditor to produce ready-to-paste responses.",
+  "version": "0.3.0"
 }
