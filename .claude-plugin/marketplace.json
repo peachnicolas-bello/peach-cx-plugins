@@ -6,28 +6,28 @@
   },
   "metadata": {
     "description": "Internal Peach CX plugins: issue debugging, bug reporting, and ticket research workflows.",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
   "plugins": [
     {
-      "name": "cx",
+      "name": "peach-cx",
       "source": "./claude/plugins/cx",
-      "description": "Peach CX skills: investigate, follow-up, draft, tags, update-repos."
+      "description": "CX ticket investigation skills: investigate, follow-up, draft, tags, update-repos."
     },
     {
-      "name": "dev",
+      "name": "peach-dev",
       "source": "./claude/plugins/dev",
-      "description": "Debugging skills for investigating an issue against the codebase and prior work, code-first."
+      "description": "Debugging skills and parallel investigation agents (TSE, DevOps, Product, Solutions lenses)."
     },
     {
-      "name": "support",
+      "name": "peach-support",
       "source": "./claude/plugins/support",
-      "description": "Bug-report skill that turns raw context or an interactive Q&A into a ready-to-file Shortcut story."
+      "description": "Bug-report skill and routing/duplicate-checker agents for Shortcut story filing."
     },
     {
-      "name": "research",
+      "name": "peach-research",
       "source": "./claude/plugins/research",
-      "description": "Ticket research: parallel internal, external, and business research agents plus a synthesis skill."
+      "description": "Parallel internal, external, and business research agents plus a synthesis skill."
     }
   ]
 }

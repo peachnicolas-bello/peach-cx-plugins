@@ -1,5 +1,9 @@
 {
-  "name": "support",
-  "description": "Bug-report skill that turns raw context or an interactive Q&A into a ready-to-file Shortcut story.",
+  "name": "peach-support",
+  "description": "Bug-report skill and routing/duplicate-checker agents for Shortcut story filing.",
+  "author": {
+    "name": "Nicolas Bello"
+  },
+  "repository": "https://github.com/peachfinance/ai-skills",
   "version": "0.2.0"
 }

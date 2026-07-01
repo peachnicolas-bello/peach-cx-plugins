@@ -1,5 +1,9 @@
 {
-  "name": "dev",
+  "name": "peach-dev",
   "description": "Debugging skills plus the shared parallel investigation agent pool (TSE, DevOps, Product, Solutions lenses).",
+  "author": {
+    "name": "Nicolas Bello"
+  },
+  "repository": "https://github.com/peachfinance/ai-skills",
   "version": "0.2.0"
 }

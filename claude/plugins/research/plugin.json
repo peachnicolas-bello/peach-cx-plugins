@@ -1,5 +1,9 @@
 {
-  "name": "research",
-  "description": "Ticket research: parallel internal, external, and business research agents plus a synthesis skill.",
+  "name": "peach-research",
+  "description": "Parallel internal, external, and business research agents plus a synthesis skill.",
+  "author": {
+    "name": "Nicolas Bello"
+  },
+  "repository": "https://github.com/peachfinance/ai-skills",
   "version": "0.1.0"
 }
