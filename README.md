@@ -44,6 +44,16 @@ claude/plugins/
       external-researcher.md
       internal-researcher.md
     skills/research/SKILL.md
+mcp-servers/                # MCP server wrappers (Zendesk, Shortcut)
+  setup.sh                  # one-time setup: installs wrappers + adds to ~/.claude.json
+  zendesk/
+    wrapper.js              # strips bloat fields from Zendesk responses
+    package.json
+  shortcut/
+    wrapper.js              # coerces string args to numbers, retries DNS flakes
+    package.json
+  shared/
+    dns-resilient.cjs       # DNS cache + retry + c-ares fallback (used by both wrappers)
 ```
 
 ## Installation
@@ -86,6 +96,41 @@ Add this to `~/.claude/settings.json` (create the file if it doesn't exist):
 
 This registers the marketplace and enables all four plugins. All skills and
 agents load automatically on launch. No manual file copying needed.
+
+### 3. Install MCP servers (Zendesk + Shortcut)
+
+The plugin repo includes wrapper scripts for Zendesk and Shortcut MCP servers.
+These wrappers add DNS resilience, response-size optimization (Zendesk), and
+type coercion fixes (Shortcut).
+
+```bash
+cd peach-cx-plugins
+bash mcp-servers/setup.sh
+```
+
+The script will:
+1. Copy wrapper files to `~/.local/zendesk-mcp-wrapper/` and `~/.local/shortcut-mcp-wrapper/`
+2. Ask for your Zendesk email, Zendesk API token, and Shortcut API token
+3. Add both MCP servers to `~/.claude.json`
+
+**Getting your tokens:**
+- **Zendesk API token**: Admin Center > Apps and integrations > Zendesk API > API token
+- **Shortcut API token**: Settings > API Tokens > Generate Token
+
+Restart Claude Code after running the setup script.
+
+### 4. Connect Slack (OAuth, per-user)
+
+Slack uses OAuth through claude.ai and cannot be bundled as a local MCP server.
+Each teammate connects it separately:
+
+1. Open Claude Code (desktop app or claude.ai/code)
+2. Go to Settings > MCP Connections (or click the MCP icon)
+3. Find "Slack" and click Connect
+4. Authorize with the Peach Finance Slack workspace
+
+Once connected, Slack tools (`slack_search_public_and_private`, `slack_read_thread`,
+etc.) are available in all sessions.
 
 ### What lives where
 

@@ -1,0 +1,8 @@
+{
+  "name": "shortcut-mcp-wrapper",
+  "version": "1.0.0",
+  "description": "Local wrapper around @shortcut/mcp that coerces string-encoded numbers to integers before validation. Fixes Claude Code's MCP transport bug.",
+  "type": "module",
+  "main": "wrapper.js",
+  "bin": { "shortcut-mcp-wrapper": "wrapper.js" }
+}

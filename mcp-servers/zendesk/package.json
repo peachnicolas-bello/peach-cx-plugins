@@ -1,0 +1,8 @@
+{
+  "name": "zendesk-mcp-wrapper",
+  "version": "1.0.0",
+  "description": "Local wrapper around zd-mcp-server that strips bloat fields from ticket responses to fit within MCP response caps.",
+  "type": "module",
+  "main": "wrapper.js",
+  "bin": { "zendesk-mcp-wrapper": "wrapper.js" }
+}
