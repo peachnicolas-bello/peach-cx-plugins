@@ -58,79 +58,49 @@ mcp-servers/                # MCP server wrappers (Zendesk, Shortcut)
 
 ## Installation
 
-This repo is private, so Claude Code needs a GitHub token with `repo` scope to
-clone it as a marketplace.
+You need three things before starting:
 
-### 1. Export your GitHub token
+1. **GitHub CLI** (`gh`), logged in. Install: `brew install gh`, then `gh auth login`.
+2. **Node.js** (v18+). Install from https://nodejs.org or `brew install node`.
+3. Your **Zendesk API token** and **Shortcut API token** (the script tells you
+   exactly where to get them).
 
-```bash
-# easiest, reuse the gh CLI token
-export GITHUB_TOKEN="$(gh auth token)"
-
-# or use a personal access token with repo scope
-export GITHUB_TOKEN="ghp_xxxxxxxxxxxxxxxxxxxx"
-```
-
-### 2. Register the marketplace in settings.json
-
-Add this to `~/.claude/settings.json` (create the file if it doesn't exist):
-
-```json
-{
-  "extraKnownMarketplaces": {
-    "peach-cx": {
-      "source": {
-        "source": "github",
-        "repo": "peachnicolas-bello/peach-cx-plugins"
-      }
-    }
-  },
-  "enabledPlugins": {
-    "cx@peach-cx": true,
-    "dev@peach-cx": true,
-    "support@peach-cx": true,
-    "research@peach-cx": true
-  }
-}
-```
-
-This registers the marketplace and enables all four plugins. All skills and
-agents load automatically on launch. No manual file copying needed.
-
-### 3. Install MCP servers (Zendesk + Shortcut)
-
-The plugin repo includes wrapper scripts for Zendesk and Shortcut MCP servers.
-These wrappers add DNS resilience, response-size optimization (Zendesk), and
-type coercion fixes (Shortcut).
+### One command setup
 
 ```bash
+git clone https://github.com/peachnicolas-bello/peach-cx-plugins.git
 cd peach-cx-plugins
-bash mcp-servers/setup.sh
+bash setup.sh
 ```
 
-The script will:
-1. Copy wrapper files to `~/.local/zendesk-mcp-wrapper/` and `~/.local/shortcut-mcp-wrapper/`
-2. Ask for your Zendesk email, Zendesk API token, and Shortcut API token
-3. Add both MCP servers to `~/.claude.json`
+The script handles everything:
+- Registers the plugin marketplace in Claude Code
+- Enables all four plugins (cx, dev, support, research)
+- Installs the Zendesk and Shortcut MCP wrappers
+- Walks you through entering your API tokens with links to the right pages
+- Tells you how to connect Slack (one click inside Claude Code)
 
-**Getting your tokens:**
-- **Zendesk API token**: Admin Center > Apps and integrations > Zendesk API > API token
-- **Shortcut API token**: Settings > API Tokens > Generate Token
+After the script finishes, restart Claude Code. Type `/investigate` in a session
+to confirm everything loaded.
 
-Restart Claude Code after running the setup script.
+### Connecting Slack (one click, inside Claude Code)
 
-### 4. Connect Slack (OAuth, per-user)
+The setup script cannot automate Slack because it uses OAuth. But it is one step:
 
-Slack uses OAuth through claude.ai and cannot be bundled as a local MCP server.
-Each teammate connects it separately:
+1. Open Claude Code
+2. Click the puzzle piece icon in the sidebar
+3. Find "Slack" and click "Connect"
+4. Authorize with the Peach Finance workspace
 
-1. Open Claude Code (desktop app or claude.ai/code)
-2. Go to Settings > MCP Connections (or click the MCP icon)
-3. Find "Slack" and click Connect
-4. Authorize with the Peach Finance Slack workspace
+That's it. Slack search is now available in all sessions.
 
-Once connected, Slack tools (`slack_search_public_and_private`, `slack_read_thread`,
-etc.) are available in all sessions.
+### Updating
+
+When the plugin repo gets new skills or agents, Claude Code picks them up
+automatically on the next session. No re-install needed.
+
+To update the MCP wrappers (rare), re-run `bash setup.sh`. It overwrites the
+wrapper files but keeps your tokens.
 
 ### What lives where
 
